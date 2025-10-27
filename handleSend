@@ -1,0 +1,29 @@
+import { sendToCore } from "@/components/hooks/useCoreApi";
+
+async function handleSend() {
+  if (!inputValue.trim()) return;
+
+  // хэрэглэгчийн мессежийг UI дээр түр нэмье
+  addMessage({
+    role: "user",
+    content: inputValue,
+  });
+
+  const userMsg = inputValue;
+  setInputValue(""); // input цэвэрлэнэ
+
+  // core API руу илгээнэ
+  const response = await sendToCore(userMsg, "35-55", "family"); // энд насны бүлэг ба сэдвийг оруулна
+
+  if (response.ok) {
+    addMessage({
+      role: "assistant",
+      content: response.reply,
+    });
+  } else {
+    addMessage({
+      role: "assistant",
+      content: "⚠️ API хариу ирсэнгүй. Сүлжээг шалгаарай.",
+    });
+  }
+}
