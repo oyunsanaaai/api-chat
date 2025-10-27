@@ -1,0 +1,17 @@
+// /components/hooks/useCoreApi.ts эсвэл яг chat-ийн дотор бичиж болно
+
+export async function sendToCore(message: string, ageGroup = "19-34", topic = "general") {
+  try {
+    const res = await fetch("/api/core", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ message, ageGroup, topic }),
+    });
+
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    console.error("CORE API error:", error);
+    return { ok: false, reply: "⚠️ Алдаа гарлаа. Сүлжээ эсвэл серверийг шалгаарай." };
+  }
+}
